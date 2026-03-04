@@ -19,6 +19,8 @@ public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
 
+        System.out.println("===== LENGTH OPERATIONS =====");
+
         Quantity<LengthUnit> length1 =
                 new Quantity<>(1.0, LengthUnit.FEET);
         Quantity<LengthUnit> length2 =
@@ -28,6 +30,9 @@ public class QuantityMeasurementApp {
         demonstrateConversion(length1, LengthUnit.INCHES);
         demonstrateAddition(length1, length2, LengthUnit.FEET);
 
+
+        System.out.println("\n===== WEIGHT OPERATIONS =====");
+
         Quantity<WeightUnit> weight1 =
                 new Quantity<>(1.0, WeightUnit.KILOGRAM);
         Quantity<WeightUnit> weight2 =
@@ -36,5 +41,23 @@ public class QuantityMeasurementApp {
         demonstrateEquality(weight1, weight2);
         demonstrateConversion(weight1, WeightUnit.GRAM);
         demonstrateAddition(weight1, weight2, WeightUnit.KILOGRAM);
+
+
+        System.out.println("\n===== VOLUME OPERATIONS =====");
+
+        Quantity<VolumeUnit> volume1 =
+                new Quantity<>(1.0, VolumeUnit.LITRE);
+        Quantity<VolumeUnit> volume2 =
+                new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+        Quantity<VolumeUnit> volume3 =
+                new Quantity<>(1.0, VolumeUnit.GALLON);
+
+        demonstrateEquality(volume1, volume2);
+        demonstrateConversion(volume1, VolumeUnit.MILLILITRE);
+        demonstrateAddition(volume1, volume2, VolumeUnit.LITRE);
+
+        demonstrateEquality(volume3, volume1);
+        demonstrateConversion(volume3, VolumeUnit.LITRE);
+        demonstrateAddition(volume1, volume3, VolumeUnit.MILLILITRE);
     }
 }
