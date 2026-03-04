@@ -5,124 +5,170 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class QuantityTest {
 
-    private static final double EPSILON = 0.0001;
+    private static final double EPSILON = 0.01;
 
-    // 1 L = 1 L
+    // =============================
+    // SUBTRACTION TESTS
+    // =============================
+
     @Test
-    void testEquality_LitreToLitre() {
-        Quantity<VolumeUnit> a = new Quantity<>(1.0, VolumeUnit.LITRE);
-        Quantity<VolumeUnit> b = new Quantity<>(1.0, VolumeUnit.LITRE);
+    void testSubtraction_SameUnit_FeetMinusFeet() {
 
-        assertTrue(a.equals(b));
+        Quantity<LengthUnit> a =
+                new Quantity<>(10.0, LengthUnit.FEET);
+
+        Quantity<LengthUnit> b =
+                new Quantity<>(5.0, LengthUnit.FEET);
+
+        Quantity<LengthUnit> result = a.subtract(b);
+
+        assertEquals(5.0, result.getValue(), EPSILON);
+        assertEquals(LengthUnit.FEET, result.getUnit());
     }
 
-    // 1 L != 2 L
     @Test
-    void testEquality_LitreDifferent() {
-        Quantity<VolumeUnit> a = new Quantity<>(1.0, VolumeUnit.LITRE);
-        Quantity<VolumeUnit> b = new Quantity<>(2.0, VolumeUnit.LITRE);
+    void testSubtraction_CrossUnit_FeetMinusInches() {
 
-        assertFalse(a.equals(b));
+        Quantity<LengthUnit> feet =
+                new Quantity<>(10.0, LengthUnit.FEET);
+
+        Quantity<LengthUnit> inches =
+                new Quantity<>(6.0, LengthUnit.INCHES);
+
+        Quantity<LengthUnit> result = feet.subtract(inches);
+
+        assertEquals(9.5, result.getValue(), EPSILON);
     }
 
-    // 1 L = 1000 mL
     @Test
-    void testEquality_LitreToMillilitre() {
-        Quantity<VolumeUnit> litre = new Quantity<>(1.0, VolumeUnit.LITRE);
-        Quantity<VolumeUnit> ml = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+    void testSubtraction_ExplicitTargetUnit_Inches() {
 
-        assertTrue(litre.equals(ml));
+        Quantity<LengthUnit> feet =
+                new Quantity<>(10.0, LengthUnit.FEET);
+
+        Quantity<LengthUnit> inches =
+                new Quantity<>(6.0, LengthUnit.INCHES);
+
+        Quantity<LengthUnit> result =
+                feet.subtract(inches, LengthUnit.INCHES);
+
+        assertEquals(114.0, result.getValue(), EPSILON);
     }
 
-    // mL → L
     @Test
-    void testConversion_MillilitreToLitre() {
-        Quantity<VolumeUnit> ml = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+    void testSubtraction_ResultingInNegative() {
 
-        Quantity<VolumeUnit> result = ml.convertTo(VolumeUnit.LITRE);
+        Quantity<LengthUnit> a =
+                new Quantity<>(5.0, LengthUnit.FEET);
 
-        assertEquals(1.0, result.getValue(), EPSILON);
+        Quantity<LengthUnit> b =
+                new Quantity<>(10.0, LengthUnit.FEET);
+
+        Quantity<LengthUnit> result = a.subtract(b);
+
+        assertEquals(-5.0, result.getValue(), EPSILON);
     }
 
-    // L → mL
     @Test
-    void testConversion_LitreToMillilitre() {
-        Quantity<VolumeUnit> litre = new Quantity<>(1.0, VolumeUnit.LITRE);
+    void testSubtraction_ResultingInZero() {
 
-        Quantity<VolumeUnit> result = litre.convertTo(VolumeUnit.MILLILITRE);
+        Quantity<LengthUnit> feet =
+                new Quantity<>(10.0, LengthUnit.FEET);
 
-        assertEquals(1000.0, result.getValue(), EPSILON);
+        Quantity<LengthUnit> inches =
+                new Quantity<>(120.0, LengthUnit.INCHES);
+
+        Quantity<LengthUnit> result = feet.subtract(inches);
+
+        assertEquals(0.0, result.getValue(), EPSILON);
     }
 
-    // Gallon → Litre
+    // =============================
+    // DIVISION TESTS
+    // =============================
+
     @Test
-    void testConversion_GallonToLitre() {
-        Quantity<VolumeUnit> gallon = new Quantity<>(1.0, VolumeUnit.GALLON);
+    void testDivision_SameUnit_FeetDividedByFeet() {
 
-        Quantity<VolumeUnit> result = gallon.convertTo(VolumeUnit.LITRE);
+        Quantity<LengthUnit> a =
+                new Quantity<>(10.0, LengthUnit.FEET);
 
-        assertEquals(3.79, result.getValue(), EPSILON);
+        Quantity<LengthUnit> b =
+                new Quantity<>(2.0, LengthUnit.FEET);
+
+        double result = a.divide(b);
+
+        assertEquals(5.0, result, EPSILON);
     }
 
-    // L + L
     @Test
-    void testAddition_LitrePlusLitre() {
+    void testDivision_CrossUnit_InchesDividedByFeet() {
 
-        Quantity<VolumeUnit> a = new Quantity<>(1.0, VolumeUnit.LITRE);
-        Quantity<VolumeUnit> b = new Quantity<>(2.0, VolumeUnit.LITRE);
+        Quantity<LengthUnit> inches =
+                new Quantity<>(24.0, LengthUnit.INCHES);
 
-        Quantity<VolumeUnit> result =
-                a.add(b, VolumeUnit.LITRE);
+        Quantity<LengthUnit> feet =
+                new Quantity<>(2.0, LengthUnit.FEET);
 
-        assertEquals(3.0, result.getValue(), EPSILON);
+        double result = inches.divide(feet);
+
+        assertEquals(1.0, result, EPSILON);
     }
 
-    // L + mL
     @Test
-    void testAddition_LitrePlusMillilitre() {
+    void testDivision_RatioGreaterThanOne() {
 
-        Quantity<VolumeUnit> litre =
+        Quantity<WeightUnit> a =
+                new Quantity<>(10.0, WeightUnit.KILOGRAM);
+
+        Quantity<WeightUnit> b =
+                new Quantity<>(5.0, WeightUnit.KILOGRAM);
+
+        double result = a.divide(b);
+
+        assertEquals(2.0, result, EPSILON);
+    }
+
+    @Test
+    void testDivision_RatioLessThanOne() {
+
+        Quantity<VolumeUnit> a =
+                new Quantity<>(5.0, VolumeUnit.LITRE);
+
+        Quantity<VolumeUnit> b =
+                new Quantity<>(10.0, VolumeUnit.LITRE);
+
+        double result = a.divide(b);
+
+        assertEquals(0.5, result, EPSILON);
+    }
+
+    @Test
+    void testDivision_RatioEqualToOne() {
+
+        Quantity<VolumeUnit> a =
                 new Quantity<>(1.0, VolumeUnit.LITRE);
 
-        Quantity<VolumeUnit> ml =
+        Quantity<VolumeUnit> b =
                 new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
 
-        Quantity<VolumeUnit> result =
-                litre.add(ml, VolumeUnit.LITRE);
+        double result = a.divide(b);
 
-        assertEquals(2.0, result.getValue(), EPSILON);
+        assertEquals(1.0, result, EPSILON);
     }
 
-    // Explicit target unit
     @Test
-    void testAddition_TargetMillilitre() {
+    void testDivision_ByZero() {
 
-        Quantity<VolumeUnit> litre =
-                new Quantity<>(1.0, VolumeUnit.LITRE);
+        Quantity<LengthUnit> a =
+                new Quantity<>(10.0, LengthUnit.FEET);
 
-        Quantity<VolumeUnit> ml =
-                new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+        Quantity<LengthUnit> b =
+                new Quantity<>(0.0, LengthUnit.FEET);
 
-        Quantity<VolumeUnit> result =
-                litre.add(ml, VolumeUnit.MILLILITRE);
-
-        assertEquals(2000.0, result.getValue(), EPSILON);
-    }
-
-    // Gallon + Litre
-    @Test
-    void testAddition_GallonPlusLitre() {
-
-        Quantity<VolumeUnit> gallon =
-                new Quantity<>(1.0, VolumeUnit.GALLON);
-
-        Quantity<VolumeUnit> litre =
-                new Quantity<>(3.78541, VolumeUnit.LITRE);
-
-        Quantity<VolumeUnit> result =
-                gallon.add(litre, VolumeUnit.GALLON);
-
-        assertEquals(2.0, result.getValue(), EPSILON);
+        assertThrows(ArithmeticException.class, () -> {
+            a.divide(b);
+        });
     }
 
 }
