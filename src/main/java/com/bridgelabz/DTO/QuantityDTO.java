@@ -17,4 +17,7 @@ public class QuantityDTO {
     public String getUnit() {
         return unit;
     }
+
+    public void getMeasurementType() {
+    }
 }
