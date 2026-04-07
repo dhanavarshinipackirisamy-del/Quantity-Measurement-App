@@ -1,25 +1,16 @@
 package com.bridgelabz.Controller;
-
-import com.bridgelabz.DTO.QuantityDTO;
-import com.bridgelabz.Service.IQuantityMeasurementService;
+import com.bridgelabz.Entity.QuantityMeasurementEntity;
+import com.bridgelabz.Service.QuantityMeasurementServiceImpl;
 
 public class QuantityMeasurementController {
 
-    private IQuantityMeasurementService service;
+    private final QuantityMeasurementServiceImpl service;
 
-    public QuantityMeasurementController(IQuantityMeasurementService service) {
+    public QuantityMeasurementController(QuantityMeasurementServiceImpl service) {
         this.service = service;
     }
 
-    public void compare(QuantityDTO q1, QuantityDTO q2) {
-        System.out.println(service.compare(q1, q2));
-    }
-
-    public void convert(QuantityDTO q, String target) {
-        System.out.println(service.convert(q, target));
-    }
-
-    public void add(QuantityDTO q1, QuantityDTO q2) {
-        System.out.println(service.add(q1, q2));
+    public void performOperation(QuantityMeasurementEntity entity) {
+        service.save(entity);
     }
 }

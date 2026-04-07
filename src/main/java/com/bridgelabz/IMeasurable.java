@@ -1,10 +1,7 @@
-package com.bridgelabz;
+package com.app.quantitymeasurement.unit;
 
 public interface IMeasurable {
-
-    double convertToBaseUnit(double value);
-
-    double convertFromBaseUnit(double baseValue);
-
+    double toBaseUnit(double value);
+    double fromBaseUnit(double baseValue);
     String getUnitName();
 }

@@ -1,11 +1,9 @@
 package com.bridgelabz;
 
-public enum LengthUnit implements IMeasurable {
+public enum LengthUnit implements com.app.quantitymeasurement.unit.IMeasurable {
 
     FEET(1.0),
-    INCHES(1.0 / 12),
-    YARDS(3.0),
-    CENTIMETERS(0.0328084);
+    INCHES(1.0 / 12.0);
 
     private final double factor;
 
@@ -13,12 +11,12 @@ public enum LengthUnit implements IMeasurable {
         this.factor = factor;
     }
 
-    public double convertToBaseUnit(double value) {
+    public double toBaseUnit(double value) {
         return value * factor;
     }
 
-    public double convertFromBaseUnit(double baseValue) {
-        return baseValue / factor;
+    public double fromBaseUnit(double base) {
+        return base / factor;
     }
 
     public String getUnitName() {

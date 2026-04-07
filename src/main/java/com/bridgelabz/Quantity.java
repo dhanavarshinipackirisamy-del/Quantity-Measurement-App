@@ -1,4 +1,6 @@
-package com.bridgelabz;
+package com.app.quantitymeasurement;
+
+import com.app.quantitymeasurement.unit.IMeasurable;
 
 public class Quantity<U extends IMeasurable> {
 
@@ -6,12 +8,6 @@ public class Quantity<U extends IMeasurable> {
     private final U unit;
 
     public Quantity(double value, U unit) {
-        if (unit == null)
-            throw new IllegalArgumentException("Unit cannot be null");
-
-        if (!Double.isFinite(value))
-            throw new IllegalArgumentException("Invalid value");
-
         this.value = value;
         this.unit = unit;
     }
@@ -20,28 +16,29 @@ public class Quantity<U extends IMeasurable> {
         return value;
     }
 
-    private double toBase() {
-        return unit.convertToBaseUnit(value);
-    }
-
-    public double convertTo(U target) {
-        double base = toBase();
-        return target.convertFromBaseUnit(base);
+    public Quantity<U> convertTo(U targetUnit) {
+        double base = unit.toBaseUnit(value);
+        double converted = targetUnit.fromBaseUnit(base);
+        return new Quantity<>(converted, targetUnit);
     }
 
     public Quantity<U> add(Quantity<U> other, U targetUnit) {
-        double sum = this.toBase() + other.toBase();
-        return new Quantity<>(targetUnit.convertFromBaseUnit(sum), targetUnit);
+        double base1 = unit.toBaseUnit(value);
+        double base2 = other.unit.toBaseUnit(other.value);
+
+        double result = base1 + base2;
+        double converted = targetUnit.fromBaseUnit(result);
+
+        return new Quantity<>(converted, targetUnit);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Quantity<?> other)) return false;
-        return Math.abs(this.toBase() - other.toBase()) < 0.01;
-    }
+        if (!(obj instanceof Quantity<?> q)) return false;
 
-    @Override
-    public String toString() {
-        return value + " " + unit.getUnitName();
+        double base1 = unit.toBaseUnit(value);
+        double base2 = ((IMeasurable) q.unit).toBaseUnit(q.value);
+
+        return Math.abs(base1 - base2) < 0.01;
     }
 }
