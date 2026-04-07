@@ -1,10 +1,9 @@
-package com.bridgelabz;
+package com.app.quantitymeasurement.unit;
 
-public enum WeightUnit implements IMeasurable {
+public enum WeightUnit implements com.app.quantitymeasurement.unit.IMeasurable {
 
     KILOGRAM(1.0),
-    GRAM(0.001),
-    POUND(0.453592);
+    GRAM(0.001);
 
     private final double factor;
 
@@ -12,12 +11,12 @@ public enum WeightUnit implements IMeasurable {
         this.factor = factor;
     }
 
-    public double convertToBaseUnit(double value) {
+    public double toBaseUnit(double value) {
         return value * factor;
     }
 
-    public double convertFromBaseUnit(double baseValue) {
-        return baseValue / factor;
+    public double fromBaseUnit(double base) {
+        return base / factor;
     }
 
     public String getUnitName() {

@@ -1,6 +1,6 @@
-package com.bridgelabz;
+package com.app.quantitymeasurement.unit;
 
-public enum VolumeUnit implements IMeasurable {
+public enum VolumeUnit implements com.app.quantitymeasurement.unit.IMeasurable {
 
     LITRE(1.0),
     MILLILITRE(0.001),
@@ -12,12 +12,12 @@ public enum VolumeUnit implements IMeasurable {
         this.factor = factor;
     }
 
-    public double convertToBaseUnit(double value) {
+    public double toBaseUnit(double value) {
         return value * factor;
     }
 
-    public double convertFromBaseUnit(double baseValue) {
-        return baseValue / factor;
+    public double fromBaseUnit(double base) {
+        return base / factor;
     }
 
     public String getUnitName() {

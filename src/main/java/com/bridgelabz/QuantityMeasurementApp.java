@@ -1,52 +1,38 @@
 package com.bridgelabz;
 
+import com.bridgelabz.Controller.QuantityMeasurementController;
+import com.bridgelabz.Entity.QuantityMeasurementEntity;
+import com.bridgelabz.Repository.IQuantityMeasurementRepository;
+import com.bridgelabz.Repository.QuantityMeasurementDatabaseRepository;
+import com.bridgelabz.Service.QuantityMeasurementServiceImpl;
+
 public class QuantityMeasurementApp {
-
-    public static <U extends IMeasurable> void demonstrateEquality(
-            Quantity<U> q1, Quantity<U> q2) {
-        System.out.println(q1 + " equals " + q2 + " ? " + q1.equals(q2));
-    }
-
-    public static <U extends IMeasurable> void demonstrateConversion(
-            Quantity<U> quantity, U targetUnit) {
-        System.out.println("Converted: " + quantity.convertTo(targetUnit));
-    }
-
-    public static <U extends IMeasurable> void demonstrateAddition(
-            Quantity<U> q1, Quantity<U> q2, U targetUnit) {
-        System.out.println("Sum: " + q1.add(q2, targetUnit));
-    }
 
     public static void main(String[] args) {
 
-        Quantity<LengthUnit> length1 =
-                new Quantity<>(1.0, LengthUnit.FEET);
+        // ✅ Choose repository (DB version for UC16)
+        IQuantityMeasurementRepository repository =
+                new QuantityMeasurementDatabaseRepository();
 
-        Quantity<LengthUnit> length2 =
-                new Quantity<>(12.0, LengthUnit.INCHES);
+        // ✅ Service layer
+        QuantityMeasurementServiceImpl service =
+                new QuantityMeasurementServiceImpl(repository);
 
-        demonstrateEquality(length1, length2);
-        demonstrateConversion(length1, LengthUnit.INCHES);
-        demonstrateAddition(length1, length2, LengthUnit.FEET);
+        // ✅ Controller layer
+        QuantityMeasurementController controller =
+                new QuantityMeasurementController(service);
 
-        Quantity<WeightUnit> weight1 =
-                new Quantity<>(1.0, WeightUnit.KILOGRAM);
+        // ✅ Sample Data
+        QuantityMeasurementEntity entity1 =
+                new QuantityMeasurementEntity("LENGTH", 1.0, "FEET", 12.0, "INCHES");
 
-        Quantity<WeightUnit> weight2 =
-                new Quantity<>(1000.0, WeightUnit.GRAM);
+        QuantityMeasurementEntity entity2 =
+                new QuantityMeasurementEntity("WEIGHT", 1.0, "KILOGRAM", 1000.0, "GRAM");
 
-        demonstrateEquality(weight1, weight2);
-        demonstrateConversion(weight1, WeightUnit.GRAM);
-        demonstrateAddition(weight1, weight2, WeightUnit.KILOGRAM);
+        // ✅ Perform operations
+        controller.performOperation(entity1);
+        controller.performOperation(entity2);
 
-        Quantity<VolumeUnit> v1 =
-                new Quantity<>(1.0, VolumeUnit.LITRE);
-
-        Quantity<VolumeUnit> v2 =
-                new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
-
-        demonstrateEquality(v1, v2);
-        demonstrateConversion(v1, VolumeUnit.MILLILITRE);
-        demonstrateAddition(v1, v2, VolumeUnit.LITRE);
+        System.out.println("✅ Data saved successfully (DB or Cache)");
     }
 }
