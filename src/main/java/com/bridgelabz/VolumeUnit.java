@@ -6,28 +6,21 @@ public enum VolumeUnit implements IMeasurable {
     MILLILITRE(0.001),
     GALLON(3.78541);
 
-    private final double conversionFactor;
+    private final double factor;
 
-    VolumeUnit(double conversionFactor) {
-        this.conversionFactor = conversionFactor;
+    VolumeUnit(double factor) {
+        this.factor = factor;
     }
 
-    @Override
     public double convertToBaseUnit(double value) {
-        return value * conversionFactor;
+        return value * factor;
     }
 
-    @Override
     public double convertFromBaseUnit(double baseValue) {
-        return baseValue / conversionFactor;
+        return baseValue / factor;
     }
 
-    @Override
-    public double getConversionFactor() {
-        return conversionFactor;
-    }
-    @Override
     public String getUnitName() {
-        return this.name();
+        return name();
     }
 }
