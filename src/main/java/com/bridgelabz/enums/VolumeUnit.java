@@ -1,13 +1,14 @@
-package com.app.quantitymeasurement.unit;
+package com.bridgelabz.enums;
 
-public enum WeightUnit implements com.app.quantitymeasurement.unit.IMeasurable {
+public enum VolumeUnit implements IMeasurable {
 
-    KILOGRAM(1.0),
-    GRAM(0.001);
+    LITRE(1.0),
+    MILLILITRE(0.001),
+    GALLON(3.78541);
 
     private final double factor;
 
-    WeightUnit(double factor) {
+    VolumeUnit(double factor) {
         this.factor = factor;
     }
 

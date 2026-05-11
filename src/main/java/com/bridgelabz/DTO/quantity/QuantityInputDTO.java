@@ -1,6 +1,5 @@
-package com.bridgelabz.DTO;
+package com.bridgelabz.DTO.quantity;
 
-import com.bridgelabz.DTO.QuantityDTO;
 import lombok.Data;
 
 @Data

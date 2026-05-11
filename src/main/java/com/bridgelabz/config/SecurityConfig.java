@@ -25,8 +25,7 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 // Disable CSRF for REST APIs
@@ -36,32 +35,41 @@ public class SecurityConfig {
                 .cors(cors -> {
                 })
 
-                // Authorization Rules
+                // URL authorization rules
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                // Public authentication endpoints
                                 "/auth/**",
+
+                                // Google OAuth2 endpoints
+                                "/oauth2/**",
+                                "/login/**",
+
+                                // Google success endpoint
+                                "/google-success",
+
+                                // Swagger/OpenAPI endpoints
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                                "/v3/api-docs/**",
-                                "/api/v1/quantities/**"
-                        )
-                        .permitAll()
-
-                        .anyRequest()
-                        .authenticated()
+                                "/v3/api-docs/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 )
 
-                // Stateless Session (JWT)
+                // Google OAuth2 login configuration
+                .oauth2Login(oauth -> oauth
+                        .defaultSuccessUrl("/google-success", true)
+                )
+
+                // Stateless session for JWT APIs
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // Authentication Provider
+                // Authentication provider
                 .authenticationProvider(authenticationProvider())
 
-                // JWT Filter
+                // JWT filter
                 .addFilterBefore(
                         jwtFilter,
                         UsernamePasswordAuthenticationFilter.class
@@ -72,27 +80,21 @@ public class SecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-
-        DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider();
-
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
-
         return provider;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration configuration)
-            throws Exception {
-
-        return configuration.getAuthenticationManager();
+            AuthenticationConfiguration config
+    ) throws Exception {
+        return config.getAuthenticationManager();
     }
 }

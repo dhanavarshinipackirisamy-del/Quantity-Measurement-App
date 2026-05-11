@@ -1,4 +1,4 @@
-package com.app.quantitymeasurement.unit;
+package com.bridgelabz.enums;
 
 public interface IMeasurable {
     double toBaseUnit(double value);
