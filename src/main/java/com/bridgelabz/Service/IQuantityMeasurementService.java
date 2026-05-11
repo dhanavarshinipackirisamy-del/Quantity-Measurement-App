@@ -1,7 +1,7 @@
 package com.bridgelabz.Service;
 
-import com.bridgelabz.DTO.QuantityInputDTO;
-import com.bridgelabz.DTO.QuantityMeasurementDTO;
+import com.bridgelabz.DTO.quantity.QuantityInputDTO;
+import com.bridgelabz.DTO.quantity.QuantityMeasurementDTO;
 
 import java.util.List;
 

@@ -1,6 +1,8 @@
 package com.bridgelabz.Service;
 
-import com.bridgelabz.DTO.*;
+import com.bridgelabz.DTO.auth.AuthRequest;
+import com.bridgelabz.DTO.auth.AuthResponse;
+import com.bridgelabz.DTO.auth.RegisterRequest;
 import com.bridgelabz.model.*;
 import com.bridgelabz.Repository.UserRepository;
 import com.bridgelabz.security.JwtService;

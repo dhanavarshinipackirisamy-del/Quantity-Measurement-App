@@ -1,13 +1,13 @@
-package com.bridgelabz;
+package com.bridgelabz.enums;
 
-public enum LengthUnit implements com.app.quantitymeasurement.unit.IMeasurable {
+public enum WeightUnit implements IMeasurable {
 
-    FEET(1.0),
-    INCHES(1.0 / 12.0);
+    KILOGRAM(1.0),
+    GRAM(0.001);
 
     private final double factor;
 
-    LengthUnit(double factor) {
+    WeightUnit(double factor) {
         this.factor = factor;
     }
 

@@ -1,4 +1,4 @@
-package com.bridgelabz.DTO;
+package com.bridgelabz.DTO.auth;
 
 import lombok.Data;
 

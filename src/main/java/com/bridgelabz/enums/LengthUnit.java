@@ -1,14 +1,13 @@
-package com.app.quantitymeasurement.unit;
+package com.bridgelabz.enums;
 
-public enum VolumeUnit implements com.app.quantitymeasurement.unit.IMeasurable {
+public enum LengthUnit implements IMeasurable {
 
-    LITRE(1.0),
-    MILLILITRE(0.001),
-    GALLON(3.78541);
+    FEET(1.0),
+    INCHES(1.0 / 12.0);
 
     private final double factor;
 
-    VolumeUnit(double factor) {
+    LengthUnit(double factor) {
         this.factor = factor;
     }
 

@@ -1,6 +1,4 @@
-package com.app.quantitymeasurement;
-
-import com.app.quantitymeasurement.unit.IMeasurable;
+package com.bridgelabz.enums;
 
 public class Quantity<U extends IMeasurable> {
 
